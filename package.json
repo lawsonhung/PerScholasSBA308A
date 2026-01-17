@@ -1,0 +1,36 @@
+{
+  "name": "sba",
+  "version": "1.0.0",
+  "description": "An app to search for Pokemon",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    
+    "start": "npx tsc && node ./scripts/script/script.js",
+    "compile": "npx tsc && node ./apiClient/apiClient.js",
+
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lawsonhung/PerScholasSBA308A.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lawsonhung/PerScholasSBA308A/issues"
+  },
+  "homepage": "https://github.com/lawsonhung/PerScholasSBA308A#readme",
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "axios": "^1.13.2"
+  }
+}
