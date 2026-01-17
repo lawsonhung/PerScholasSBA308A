@@ -1,1 +1,1 @@
-{"version":3,"file":"apiClient.d.ts","sourceRoot":"","sources":["apiClient.ts"],"names":[],"mappings":"AAEA,wBAAsB,UAAU,CAAC,IAAI,EAAE,MAAM,iBAE5C"}
+{"version":3,"file":"apiClient.d.ts","sourceRoot":"","sources":["apiClient.ts"],"names":[],"mappings":"AAAA,OAAc,EAAc,KAAK,aAAa,EAAuD,MAAM,OAAO,CAAC;AAInH,QAAA,MAAM,SAAS,EAAE,aAKf,CAAC;AA0BH,eAAe,SAAS,CAAC"}

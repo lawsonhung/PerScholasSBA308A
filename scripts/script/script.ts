@@ -1,12 +1,10 @@
-import axios from 'axios';
-import { getPokemon } from '../apiClient/apiClient.js';
+import apiClient from '../apiClient/apiClient.js';
 
 console.log("script connected");
 
-// async function getPokemon() {
-//   let pokemon = await axios.get("https://pokeapi.co/api/v2/pokemon/ditto/");
-//   let pokemonData: Object = pokemon.data;
-//   console.log("pokemonObj", pokemonData);
-// }
+async function getPokemon(name: string) {
+  const response = await apiClient.get(`/pokemon/${name}`);
+  return response.data;
+}
 
-getPokemon("ditto");
+console.log("script getting pokemon with apiClient singleton", await getPokemon("ditto"));
