@@ -1,3 +1,12 @@
+/* Color palette */
+/* 
+#000505
+#3B3355
+#5D5D81
+#BFCDE0
+#FEFCFD 
+*/
+
 /* BASE CODE */
 html,
 body {
@@ -7,6 +16,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: #000505;
+  color: #5D5D81;
 }
 
 *,
