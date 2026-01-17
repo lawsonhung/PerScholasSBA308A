@@ -37,4 +37,9 @@ body main {
   margin: 1em;
   font-size: 2em;
   text-align: center;
+  border-radius: 1em;
+}
+
+#searchInput:hover {
+  border-color: #5E9ED6;
 }
