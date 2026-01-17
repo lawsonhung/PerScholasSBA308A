@@ -17,11 +17,24 @@ body {
   margin: 0;
   padding: 0;
   background-color: #000505;
-  color: #5D5D81;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: inherit;
+}
+
+body main {
+  width: 100%;
+  display: flex;
+}
+
+#searchInput {
+  background-color: #BFCDE0;
+  width: 100%;
+  height: 2em;
+  margin: 1em;
+  font-size: 2em;
+  text-align: center;
 }
