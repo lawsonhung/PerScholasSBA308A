@@ -4,6 +4,8 @@ import type { PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
+// API Calls
+
 async function getAllPokemons() {
   const response: AxiosResponse = await apiClient.get("/pokemon?limit=-1");
   allPokemons = response.data.results;
@@ -15,5 +17,12 @@ async function getPokemon(name: string) {
   return response.data;
 }
 
+// Functions
+
+(async function() {
+  console.log("all pokemons", await getAllPokemons());
+})();
+
+// DOM Manipulation
+
 console.log("script getting pokemon with apiClient singleton", await getPokemon("ditto"));
-console.log("all pokemon", await getAllPokemons());
