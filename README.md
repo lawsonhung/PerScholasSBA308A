@@ -1,5 +1,6 @@
 # Per Scholas SBA 308A
-An app to search for Pokemon\
+An app to search for Pokemon
+
 Uses Vite, Axios and TypeScript
 
 ## Getting Set Up
@@ -9,14 +10,14 @@ Uses Vite, Axios and TypeScript
 ## Making Changes
 When making changes to files, you have to compile the Typescript first, then run node on the changed file, then start Vite
 
-1. Compile Typescript for the project. <br>
+1. Compile Typescript for the project. 
 `npx tsc`
 
-2. Run node on EACH of the changed files. The path is relative to the root of the project. You do this for each file you've made changes in.  <br>
-e.g.  <br>
+2. Run node on EACH of the changed files. The path is relative to the root of the project. You do this for each file you've made changes in.  
+e.g.  
 `node ./scripts/apiClient/apiClient.js`
 
-3. Start vite.  <br>
+3. Start vite. 
 `npm run dev`
 
 ### Acknowledgements
