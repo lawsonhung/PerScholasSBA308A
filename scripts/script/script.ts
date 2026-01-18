@@ -23,14 +23,28 @@ async function getPokemon(name: string) {
 // Functions
 
 (async function onPageLoad() {
-  console.log("all pokemons", await getAllPokemons());
+  try {
+    console.log("all pokemons", await getAllPokemons());
 
-  // Event Listeners
-  document.addEventListener("click", (e) => shouldClearSuggestions(e));
-  searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
+    // Event Listeners
+    document.addEventListener("click", (e) => shouldClearSuggestions(e));
+    searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error(`❌ ${err.message}`);
+    } else {
+      console.log("An unknown error occured");
+    }
+  }
 })();
 
 async function displayPokemon(name: string) {
+  if (searchInput) {
+    searchInput.innerText = "";
+  } else {
+    throw new Error("searchInput does not exist");
+  }
+
   clearSearchSuggestions();
   const pokemon = await getPokemon(name);
   console.log("got pokemon", pokemon);
@@ -47,7 +61,7 @@ function clearSearchSuggestions(): HTMLElement {
 
 function shouldClearSuggestions(e: PointerEvent) {
   const isClickInsideSuggestionsOrSearch: boolean | undefined = searchInput?.contains(e.target as HTMLInputElement);
-  
+
   if (!isClickInsideSuggestionsOrSearch) {
     console.log("clicked outside modal");
   } else {

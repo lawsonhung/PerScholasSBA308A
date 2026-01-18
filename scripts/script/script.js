@@ -14,12 +14,28 @@ async function getPokemon(name) {
 }
 // Functions
 (async function onPageLoad() {
-    console.log("all pokemons", await getAllPokemons());
-    // Event Listeners
-    document.addEventListener("click", (e) => shouldClearSuggestions(e));
-    searchInput?.addEventListener("input", (e) => showSuggestions(e.currentTarget.value));
+    try {
+        console.log("all pokemons", await getAllPokemons());
+        // Event Listeners
+        document.addEventListener("click", (e) => shouldClearSuggestions(e));
+        searchInput?.addEventListener("input", (e) => showSuggestions(e.currentTarget.value));
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            console.error(`❌ ${err.message}`);
+        }
+        else {
+            console.log("An unknown error occured");
+        }
+    }
 })();
 async function displayPokemon(name) {
+    if (searchInput) {
+        searchInput.innerText = "";
+    }
+    else {
+        throw new Error("searchInput does not exist");
+    }
     clearSearchSuggestions();
     const pokemon = await getPokemon(name);
     console.log("got pokemon", pokemon);
