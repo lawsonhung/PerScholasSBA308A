@@ -57,6 +57,10 @@ body main {
   border-radius: 0em 0em 1em 1em;
 }
 
+#searchSuggestions > :only-child {
+  border-radius: 1em 1em 1em 1em;
+}
+
 .searchSuggestion {
   background-color: #BFCDE0;
   font-size: 1.4em;
