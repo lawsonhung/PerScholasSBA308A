@@ -1,7 +1,7 @@
 import apiClient from '../apiClient/apiClient.js';
 let allPokemons;
-const searchInput = document.getElementById("searchInput");
-const searchSuggestions = document.getElementById("searchSuggestions");
+let searchInput = document.getElementById("searchInput");
+let searchSuggestions = document.getElementById("searchSuggestions");
 // API Calls
 async function getAllPokemons() {
     const response = await apiClient.get("/pokemon?limit=-1");
@@ -19,8 +19,18 @@ async function getPokemon(name) {
     searchInput?.addEventListener("input", (e) => showSuggestions(e.currentTarget.value));
 })();
 async function displayPokemon(name) {
+    clearSearchSuggestions();
     const pokemon = await getPokemon(name);
     console.log(pokemon);
+}
+function clearSearchSuggestions() {
+    if (searchSuggestions) {
+        searchSuggestions.innerHTML = "";
+    }
+    else {
+        throw new Error("datalist searchSuggestions does not exist");
+    }
+    return searchSuggestions;
 }
 // DOM Manipulation
 function showSuggestions(inputValue) {
@@ -28,12 +38,7 @@ function showSuggestions(inputValue) {
     const filteredPokemonNames = allPokemons.filter(pokemon => {
         return pokemon.name.includes(inputValue.toLowerCase());
     });
-    if (searchSuggestions) {
-        searchSuggestions.innerHTML = "";
-    }
-    else {
-        throw new Error("datalist searchSuggestions does not exist");
-    }
+    searchSuggestions = clearSearchSuggestions();
     for (const pokemon of filteredPokemonNames) {
         let pokemonNameEl = document.createElement("div");
         pokemonNameEl.innerText = pokemon.name;

@@ -65,4 +65,5 @@ body main {
 
 .searchSuggestion:hover {
   background-color: #5D5D81;
+  cursor: pointer;
 }

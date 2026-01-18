@@ -4,8 +4,8 @@ import type { PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
-const searchInput = document.getElementById("searchInput");
-const searchSuggestions = document.getElementById("searchSuggestions");
+let searchInput = document.getElementById("searchInput");
+let searchSuggestions = document.getElementById("searchSuggestions");
 
 // API Calls
 
@@ -30,8 +30,18 @@ async function getPokemon(name: string) {
 })();
 
 async function displayPokemon(name: string) {
+  clearSearchSuggestions();
   const pokemon = await getPokemon(name);
   console.log(pokemon);
+}
+
+function clearSearchSuggestions() {
+  if (searchSuggestions) {
+    searchSuggestions.innerHTML = "";
+  } else {
+    throw new Error("datalist searchSuggestions does not exist");
+  }
+  return searchSuggestions;
 }
 
 // DOM Manipulation
@@ -43,11 +53,7 @@ function showSuggestions(inputValue: string) {
     return pokemon.name.includes(inputValue.toLowerCase());
   });
 
-  if (searchSuggestions) {
-    searchSuggestions.innerHTML = "";
-  } else {
-    throw new Error("datalist searchSuggestions does not exist");
-  }
+  searchSuggestions = clearSearchSuggestions();
 
   for (const pokemon of filteredPokemonNames) {
     let pokemonNameEl: HTMLDivElement = document.createElement("div");
