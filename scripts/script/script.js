@@ -22,7 +22,7 @@ async function getPokemon(name) {
 async function displayPokemon(name) {
     clearSearchSuggestions();
     const pokemon = await getPokemon(name);
-    console.log(pokemon);
+    console.log("got pokemon", pokemon);
 }
 function clearSearchSuggestions() {
     if (searchSuggestions) {
@@ -44,7 +44,6 @@ function shouldClearSuggestions(e) {
 }
 // DOM Manipulation
 function showSuggestions(inputValue) {
-    console.log(inputValue);
     const filteredPokemonNames = allPokemons.filter(pokemon => {
         return pokemon.name.includes(inputValue.toLowerCase());
     });

@@ -4,8 +4,8 @@ import type { PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
-let searchInput = document.getElementById("searchInput");
-let searchSuggestions = document.getElementById("searchSuggestions");
+let searchInput: HTMLElement | null = document.getElementById("searchInput");
+let searchSuggestions: HTMLElement | null = document.getElementById("searchSuggestions");
 
 // API Calls
 
@@ -33,10 +33,10 @@ async function getPokemon(name: string) {
 async function displayPokemon(name: string) {
   clearSearchSuggestions();
   const pokemon = await getPokemon(name);
-  console.log(pokemon);
+  console.log("got pokemon", pokemon);
 }
 
-function clearSearchSuggestions() {
+function clearSearchSuggestions(): HTMLElement {
   if (searchSuggestions) {
     searchSuggestions.innerHTML = "";
   } else {
@@ -46,7 +46,7 @@ function clearSearchSuggestions() {
 }
 
 function shouldClearSuggestions(e: PointerEvent) {
-  const isClickInsideSuggestionsOrSearch = searchInput?.contains(e.target as HTMLInputElement);
+  const isClickInsideSuggestionsOrSearch: boolean | undefined = searchInput?.contains(e.target as HTMLInputElement);
   
   if (!isClickInsideSuggestionsOrSearch) {
     console.log("clicked outside modal");
@@ -57,8 +57,6 @@ function shouldClearSuggestions(e: PointerEvent) {
 
 // DOM Manipulation
 function showSuggestions(inputValue: string) {
-
-  console.log(inputValue);
 
   const filteredPokemonNames: PokemonName[] = allPokemons.filter(pokemon => {
     return pokemon.name.includes(inputValue.toLowerCase());
