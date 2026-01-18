@@ -29,6 +29,11 @@ async function getPokemon(name: string) {
   searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
 })();
 
+async function displayPokemon(name: string) {
+  const pokemon = await getPokemon(name);
+  console.log(pokemon);
+}
+
 // DOM Manipulation
 function showSuggestions(inputValue: string) {
 
@@ -48,6 +53,8 @@ function showSuggestions(inputValue: string) {
     let pokemonNameEl: HTMLDivElement = document.createElement("div");
     pokemonNameEl.innerText = pokemon.name;
     pokemonNameEl.classList.add("searchSuggestion");
+    pokemonNameEl.addEventListener("click", () => displayPokemon(pokemon.name))
     searchSuggestions.append(pokemonNameEl);
   }
 }
+

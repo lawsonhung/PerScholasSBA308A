@@ -62,3 +62,7 @@ body main {
   font-size: 1.4em;
   text-align: center;
 }
+
+.searchSuggestion:hover {
+  background-color: #5D5D81;
+}
