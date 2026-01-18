@@ -50,6 +50,9 @@ body main {
 
 #searchSuggestions {
   margin: 0em 2em 2em 2em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 #searchSuggestions > :first-child {
