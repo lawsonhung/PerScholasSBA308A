@@ -7,9 +7,6 @@ let allPokemons: PokemonName[];
 const searchInput = document.getElementById("searchInput");
 const searchSuggestions = document.getElementById("searchSuggestions");
 
-// Event Listeners
-searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
-
 // API Calls
 
 async function getAllPokemons(): Promise<PokemonName[]> {
@@ -25,12 +22,18 @@ async function getPokemon(name: string) {
 
 // Functions
 
-(async function () {
+(async function onPageLoad() {
   console.log("all pokemons", await getAllPokemons());
+
+  // Event Listeners
+  searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
 })();
 
 // DOM Manipulation
 function showSuggestions(inputValue: string) {
+
+  console.log(inputValue);
+
   const filteredPokemonNames: PokemonName[] = allPokemons.filter(pokemon => {
     return pokemon.name.includes(inputValue.toLowerCase());
   });
@@ -42,8 +45,9 @@ function showSuggestions(inputValue: string) {
   }
 
   for (const pokemon of filteredPokemonNames) {
-    let optionEl: HTMLOptionElement = document.createElement("option");
-    optionEl.value = pokemon.name;
-    searchSuggestions?.append(optionEl);
+    let pokemonNameEl: HTMLDivElement = document.createElement("div");
+    pokemonNameEl.innerText = pokemon.name;
+    pokemonNameEl.classList.add("searchSuggestion");
+    searchSuggestions.append(pokemonNameEl);
   }
 }
