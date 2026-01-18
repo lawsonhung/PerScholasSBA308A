@@ -26,6 +26,7 @@ async function getPokemon(name: string) {
   console.log("all pokemons", await getAllPokemons());
 
   // Event Listeners
+  document.addEventListener("click", (e) => shouldClearSuggestions(e));
   searchInput?.addEventListener("input", (e) => showSuggestions((e.currentTarget as HTMLInputElement).value));
 })();
 
@@ -42,6 +43,16 @@ function clearSearchSuggestions() {
     throw new Error("datalist searchSuggestions does not exist");
   }
   return searchSuggestions;
+}
+
+function shouldClearSuggestions(e: PointerEvent) {
+  const isClickInsideSuggestionsOrSearch = searchInput?.contains(e.target as HTMLInputElement);
+  
+  if (!isClickInsideSuggestionsOrSearch) {
+    console.log("clicked outside modal");
+  } else {
+    console.log("clicked inside modal");
+  }
 }
 
 // DOM Manipulation

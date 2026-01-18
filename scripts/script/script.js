@@ -16,6 +16,7 @@ async function getPokemon(name) {
 (async function onPageLoad() {
     console.log("all pokemons", await getAllPokemons());
     // Event Listeners
+    document.addEventListener("click", (e) => shouldClearSuggestions(e));
     searchInput?.addEventListener("input", (e) => showSuggestions(e.currentTarget.value));
 })();
 async function displayPokemon(name) {
@@ -31,6 +32,15 @@ function clearSearchSuggestions() {
         throw new Error("datalist searchSuggestions does not exist");
     }
     return searchSuggestions;
+}
+function shouldClearSuggestions(e) {
+    const isClickInsideSuggestionsOrSearch = searchInput?.contains(e.target);
+    if (!isClickInsideSuggestionsOrSearch) {
+        console.log("clicked outside modal");
+    }
+    else {
+        console.log("clicked inside modal");
+    }
 }
 // DOM Manipulation
 function showSuggestions(inputValue) {
