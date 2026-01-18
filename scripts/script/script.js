@@ -39,6 +39,7 @@ async function displayPokemon(name) {
     clearSearchSuggestions();
     const pokemon = await getPokemon(name);
     console.log("got pokemon", pokemon);
+    updateCard(pokemon);
 }
 function clearSearchSuggestions() {
     if (searchSuggestions) {
@@ -69,5 +70,16 @@ function showSuggestions(inputValue) {
         pokemonNameEl.addEventListener("click", () => displayPokemon(pokemon.name));
         searchSuggestions.append(pokemonNameEl);
     }
+}
+function updateCard(pokemon) {
+    let hpEl = document.getElementById("hpSpan");
+    const baseStat = pokemon.stats[0]?.base_stat;
+    console.log("baseStat", pokemon.stats[0]);
+    if (!hpEl)
+        throw new Error("hp span element does not exist");
+    if (!baseStat)
+        throw new Error("pokemon is missing baseStat");
+    console.log("baseStat", baseStat);
+    hpEl.innerText = baseStat;
 }
 //# sourceMappingURL=script.js.map

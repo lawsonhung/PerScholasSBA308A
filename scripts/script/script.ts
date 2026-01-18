@@ -49,6 +49,7 @@ async function displayPokemon(name: string) {
 
   const pokemon = await getPokemon(name);
   console.log("got pokemon", pokemon);
+  updateCard(pokemon);
 }
 
 function clearSearchSuggestions(): HTMLElement {
@@ -86,3 +87,16 @@ function showSuggestions(inputValue: string) {
   }
 }
 
+function updateCard(pokemon: { stats: { base_stat: any; }[]; }) {
+  let hpEl = document.getElementById("hpSpan");
+  const baseStat = pokemon.stats[0]?.base_stat;
+  console.log("baseStat", pokemon.stats[0]);
+
+  if (!hpEl) 
+    throw new Error("hp span element does not exist");
+  if (!baseStat) 
+    throw new Error("pokemon is missing baseStat");
+
+  console.log("baseStat", baseStat);
+  hpEl.innerText = baseStat;
+}
