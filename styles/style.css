@@ -85,4 +85,21 @@ body main {
   border-radius: 0.5em;
   display: flex;
   background-color: #3B3355;
+  flex-direction: column;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#hpSpan {
+  font-size: 2em;
+}
+
+#spriteImg {
+  width: 95%;
+  align-self: center;
+  border: 0.3em solid silver;
 }
