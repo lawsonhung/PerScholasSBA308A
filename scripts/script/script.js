@@ -72,14 +72,31 @@ function showSuggestions(inputValue) {
     }
 }
 function updateCard(pokemon) {
+    let nameEl = document.getElementById("name");
     let hpEl = document.getElementById("hpSpan");
+    let spriteImg = document.getElementById("spriteImg");
     const baseStat = pokemon.stats[0]?.base_stat;
-    console.log("baseStat", pokemon.stats[0]);
+    if (!nameEl)
+        throw new Error("name element does not exist");
     if (!hpEl)
         throw new Error("hp span element does not exist");
+    if (!spriteImg)
+        throw new Error("sprite image does not exist");
     if (!baseStat)
         throw new Error("pokemon is missing baseStat");
-    console.log("baseStat", baseStat);
-    hpEl.innerText = baseStat;
+    nameEl.innerText = capitalizeName(pokemon.name);
+    hpEl.innerText = baseStat.toString();
+    const imgHeight = spriteImg.height;
+    spriteImg.src = pokemon.sprites.front_default;
+    styleImg(spriteImg, imgHeight);
+}
+function capitalizeName(name) {
+    return name[0]?.toUpperCase() + name.substring(1);
+}
+function styleImg(img, height) {
+    img.height = height;
+    img.style.width = "auto";
+    img.style.paddingLeft = "20%";
+    img.style.paddingRight = "20%";
 }
 //# sourceMappingURL=script.js.map

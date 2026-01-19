@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { PokemonName } from '../../models/pokemon.js';
+import type { Pokemon, PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -87,16 +87,39 @@ function showSuggestions(inputValue: string) {
   }
 }
 
-function updateCard(pokemon: { stats: { base_stat: any; }[]; }) {
-  let hpEl = document.getElementById("hpSpan");
-  const baseStat = pokemon.stats[0]?.base_stat;
-  console.log("baseStat", pokemon.stats[0]);
+function updateCard(pokemon: Pokemon) {
+  let nameEl = document.getElementById("name");
+  let hpEl = document.getElementById("hpSpan") as HTMLSpanElement;
+  let spriteImg = document.getElementById("spriteImg") as HTMLImageElement;
 
+  const baseStat = pokemon.stats[0]?.base_stat;
+
+  if (!nameEl)
+    throw new Error("name element does not exist");
   if (!hpEl) 
     throw new Error("hp span element does not exist");
+  if (!spriteImg)
+    throw new Error("sprite image does not exist");
+
   if (!baseStat) 
     throw new Error("pokemon is missing baseStat");
 
-  console.log("baseStat", baseStat);
-  hpEl.innerText = baseStat;
+  nameEl.innerText = capitalizeName(pokemon.name);
+  hpEl.innerText = baseStat.toString();
+
+  const imgHeight: number = spriteImg.height;
+  spriteImg.src = pokemon.sprites.front_default;
+  styleImg(spriteImg, imgHeight);
+}
+
+function capitalizeName(name: string) {
+  return name[0]?.toUpperCase() + name.substring(1);
+}
+
+function styleImg(img: HTMLImageElement, height: number) {
+  img.height = height;
+  img.style.width = "auto";
+  img.style.paddingLeft = "20%";
+  img.style.paddingRight = "20%";
+
 }
