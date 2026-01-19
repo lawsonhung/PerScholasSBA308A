@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { Pokemon, PokemonName } from '../../models/pokemon.js';
+import type { AbilityAPIObject, EffectEntry, Pokemon, PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -88,11 +88,10 @@ function showSuggestions(inputValue: string) {
 }
 
 function updateCard(pokemon: Pokemon) {
-  let abilitiesList = document.getElementById("abilitiesList") as HTMLDivElement;
-
   updateName(pokemon.name);
   updateHp(pokemon.stats[0]?.base_stat);
   updateImg(pokemon.sprites.front_default);
+  updateAbilities(pokemon.abilities);
 }
 
 function updateName(name: string) {
@@ -127,4 +126,27 @@ function updateImg(url: string) {
   spriteImg.style.width = "auto";
   spriteImg.style.paddingLeft = "20%";
   spriteImg.style.paddingRight = "20%";
+}
+
+
+async function updateAbilities(abilities: AbilityAPIObject[]) {
+  let abilitiesList = document.getElementById("abilitiesList") as HTMLDivElement;
+
+  abilities.forEach(async (ability) => {
+    let res: AxiosResponse = await apiClient.get(ability.ability.url);
+    const abilityFrag = document.createDocumentFragment();
+    const nameEl: HTMLHeadingElement = document.createElement("h3");
+    nameEl.innerText = res.data.name;
+    abilityFrag.append(nameEl);
+
+    res.data.effect_entries.forEach((effectEntry: EffectEntry) => {
+      if (effectEntry.language.name === "en") {
+        const effectEl: HTMLParagraphElement = document.createElement("p");
+        effectEl.innerText = effectEntry.effect;
+        abilityFrag.append(effectEl);
+      }
+    })
+
+    abilitiesList.append(abilityFrag);
+  });
 }

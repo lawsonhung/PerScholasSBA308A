@@ -72,10 +72,10 @@ function showSuggestions(inputValue) {
     }
 }
 function updateCard(pokemon) {
-    let abilitiesList = document.getElementById("abilitiesList");
     updateName(pokemon.name);
     updateHp(pokemon.stats[0]?.base_stat);
     updateImg(pokemon.sprites.front_default);
+    updateAbilities(pokemon.abilities);
 }
 function updateName(name) {
     let nameEl = document.getElementById("name");
@@ -101,5 +101,23 @@ function updateImg(url) {
     spriteImg.style.width = "auto";
     spriteImg.style.paddingLeft = "20%";
     spriteImg.style.paddingRight = "20%";
+}
+async function updateAbilities(abilities) {
+    let abilitiesList = document.getElementById("abilitiesList");
+    abilities.forEach(async (ability) => {
+        let res = await apiClient.get(ability.ability.url);
+        const abilityFrag = document.createDocumentFragment();
+        const nameEl = document.createElement("h3");
+        nameEl.innerText = res.data.name;
+        abilityFrag.append(nameEl);
+        res.data.effect_entries.forEach((effectEntry) => {
+            if (effectEntry.language.name === "en") {
+                const effectEl = document.createElement("p");
+                effectEl.innerText = effectEntry.effect;
+                abilityFrag.append(effectEl);
+            }
+        });
+        abilitiesList.append(abilityFrag);
+    });
 }
 //# sourceMappingURL=script.js.map

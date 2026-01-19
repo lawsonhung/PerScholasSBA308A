@@ -9,7 +9,7 @@ export interface Pokemon {
   sprites: {
     front_default: string;
   }
-  abilities: Ability[];
+  abilities: AbilityAPIObject[];
 }
 
 interface Stat {
@@ -22,7 +22,20 @@ interface StatObject {
   url: string;
 }
 
-interface Ability {
-  name: string;
-  url: string;
+export interface AbilityAPIObject {
+  ability: {
+    name: string;
+    url: string;
+  }
+}
+
+export interface Ability {
+  effect_entries: EffectEntry;
+}
+
+export interface EffectEntry {
+  effect: string;
+  language: {
+    name: string;
+  }
 }
