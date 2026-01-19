@@ -72,32 +72,34 @@ function showSuggestions(inputValue) {
     }
 }
 function updateCard(pokemon) {
-    let nameEl = document.getElementById("name");
-    let hpEl = document.getElementById("hpSpan");
-    let spriteImg = document.getElementById("spriteImg");
     let abilitiesList = document.getElementById("abilitiesList");
-    const baseStat = pokemon.stats[0]?.base_stat;
+    updateName(pokemon.name);
+    updateHp(pokemon.stats[0]?.base_stat);
+    updateImg(pokemon.sprites.front_default);
+}
+function updateName(name) {
+    let nameEl = document.getElementById("name");
     if (!nameEl)
         throw new Error("name element does not exist");
+    nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
+}
+function updateHp(hp) {
+    let hpEl = document.getElementById("hpSpan");
     if (!hpEl)
         throw new Error("hp span element does not exist");
+    if (!hp)
+        throw new Error("hp is undefined from Pokeapi");
+    hpEl.innerText = hp.toString();
+}
+function updateImg(url) {
+    let spriteImg = document.getElementById("spriteImg");
     if (!spriteImg)
         throw new Error("sprite image does not exist");
-    if (!baseStat)
-        throw new Error("pokemon is missing baseStat");
-    nameEl.innerText = capitalizeName(pokemon.name);
-    hpEl.innerText = baseStat.toString();
     const imgHeight = spriteImg.height;
-    spriteImg.src = pokemon.sprites.front_default;
-    styleImg(spriteImg, imgHeight);
-}
-function capitalizeName(name) {
-    return name[0]?.toUpperCase() + name.substring(1);
-}
-function styleImg(img, height) {
-    img.height = height;
-    img.style.width = "auto";
-    img.style.paddingLeft = "20%";
-    img.style.paddingRight = "20%";
+    spriteImg.src = url;
+    spriteImg.height = imgHeight;
+    spriteImg.style.width = "auto";
+    spriteImg.style.paddingLeft = "20%";
+    spriteImg.style.paddingRight = "20%";
 }
 //# sourceMappingURL=script.js.map
