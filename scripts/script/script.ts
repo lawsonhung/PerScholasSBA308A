@@ -131,6 +131,7 @@ function updateImg(url: string) {
 
 async function updateAbilities(abilities: AbilityAPIObject[]) {
   let abilitiesList = document.getElementById("abilitiesList") as HTMLDivElement;
+  abilitiesList.innerHTML = "";
 
   abilities.forEach(async (ability) => {
     let res: AxiosResponse = await apiClient.get(ability.ability.url);

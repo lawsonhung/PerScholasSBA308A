@@ -104,6 +104,7 @@ function updateImg(url) {
 }
 async function updateAbilities(abilities) {
     let abilitiesList = document.getElementById("abilitiesList");
+    abilitiesList.innerHTML = "";
     abilities.forEach(async (ability) => {
         let res = await apiClient.get(ability.ability.url);
         const abilityFrag = document.createDocumentFragment();
