@@ -75,6 +75,7 @@ function updateCard(pokemon) {
     let nameEl = document.getElementById("name");
     let hpEl = document.getElementById("hpSpan");
     let spriteImg = document.getElementById("spriteImg");
+    let abilitiesList = document.getElementById("abilitiesList");
     const baseStat = pokemon.stats[0]?.base_stat;
     if (!nameEl)
         throw new Error("name element does not exist");

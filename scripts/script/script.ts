@@ -88,9 +88,10 @@ function showSuggestions(inputValue: string) {
 }
 
 function updateCard(pokemon: Pokemon) {
-  let nameEl = document.getElementById("name");
+  let nameEl = document.getElementById("name") as HTMLHeadingElement;
   let hpEl = document.getElementById("hpSpan") as HTMLSpanElement;
   let spriteImg = document.getElementById("spriteImg") as HTMLImageElement;
+  let abilitiesList = document.getElementById("abilitiesList") as HTMLDivElement;
 
   const baseStat = pokemon.stats[0]?.base_stat;
 
@@ -110,6 +111,8 @@ function updateCard(pokemon: Pokemon) {
   const imgHeight: number = spriteImg.height;
   spriteImg.src = pokemon.sprites.front_default;
   styleImg(spriteImg, imgHeight);
+
+  
 }
 
 function capitalizeName(name: string) {
