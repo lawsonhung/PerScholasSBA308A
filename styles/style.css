@@ -107,6 +107,8 @@ body main {
 
 #imgAndDescription {
   width: 100%;
+  border: 0.3em solid silver;
+  border-bottom: none;
 }
 
 #imgContainer {
@@ -116,7 +118,14 @@ body main {
 
 #spriteImg {
   width: 100%;
-  border: 0.3em solid silver;
+}
+
+#physicalProps {
+  font-size: 0.5em;
+  background-color: silver;
+  margin-block-start: 0%;
+  margin-block-end: 0%;
+  text-align: center;
 }
 
 .abilityName, .abilityEffect {
