@@ -103,12 +103,22 @@ function updateName(name: string) {
   if (!nameEl)
     throw new Error("name element does not exist");
 
-  nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
+  nameEl.innerText = capitalizeFirstLetterOf(name);
 }
 
 async function updateEvolutionChain(speciesURL: string) {
+  const evolvesFromEl = document.getElementById("evolvesFrom") as HTMLParagraphElement;
   let res: AxiosResponse = await apiClient.get(speciesURL);
-  console.log("evolve species", res.data.evolves_from_species.name)
+
+  if (!res.data.evolves_from_species) {
+    evolvesFromEl.innerText = "";
+    return;
+  }
+
+  const name: string = res.data.evolves_from_species.name;
+
+  evolvesFromEl.innerText = `Evolves from ${capitalizeFirstLetterOf(name)}`;
+  console.log("evolves from", name);
 }
 
 function updateHp(stat: Stat | undefined) {
@@ -218,4 +228,8 @@ async function updateFlavor(url: string) {
       flavorEl.innerText = flavorEntry.flavor_text;
     }
   });
+}
+
+function capitalizeFirstLetterOf(name: string): string {
+  return name[0]?.toUpperCase() + name.substring(1);
 }

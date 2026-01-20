@@ -84,11 +84,18 @@ function updateName(name) {
     let nameEl = document.getElementById("name");
     if (!nameEl)
         throw new Error("name element does not exist");
-    nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
+    nameEl.innerText = capitalizeFirstLetterOf(name);
 }
 async function updateEvolutionChain(speciesURL) {
+    const evolvesFromEl = document.getElementById("evolvesFrom");
     let res = await apiClient.get(speciesURL);
-    console.log("evolve species", res.data.evolves_from_species.name);
+    if (!res.data.evolves_from_species) {
+        evolvesFromEl.innerText = "";
+        return;
+    }
+    const name = res.data.evolves_from_species.name;
+    evolvesFromEl.innerText = `Evolves from ${capitalizeFirstLetterOf(name)}`;
+    console.log("evolves from", name);
 }
 function updateHp(stat) {
     const statLabelEl = document.getElementById("statLabelSpan");
@@ -176,5 +183,8 @@ async function updateFlavor(url) {
             flavorEl.innerText = flavorEntry.flavor_text;
         }
     });
+}
+function capitalizeFirstLetterOf(name) {
+    return name[0]?.toUpperCase() + name.substring(1);
 }
 //# sourceMappingURL=script.js.map
