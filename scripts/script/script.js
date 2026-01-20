@@ -176,7 +176,7 @@ async function updateAbilities(abilities) {
 }
 async function updateDamageRelations(types) {
     types.forEach(async (type) => {
-        const weaknessEl = document.getElementById("weakness");
+        const weaknessEl = document.getElementById("weakessList");
         weaknessEl.replaceChildren();
         const res = await apiClient.get(type.type.url);
         const damageRelations = res.data.damage_relations;
@@ -198,7 +198,7 @@ async function updateFlavor(url) {
     const res = await apiClient.get(url);
     res.data.flavor_text_entries.forEach((flavorEntry) => {
         if (flavorEntry.language.name === "en") {
-            flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, '');
+            flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, ' ');
         }
     });
 }

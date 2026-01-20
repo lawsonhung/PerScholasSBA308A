@@ -218,7 +218,7 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
 async function updateDamageRelations(types: TypeAPIObject[]) {
   types.forEach(async (type: TypeAPIObject) => {
-    const weaknessEl = document.getElementById("weakness") as HTMLDivElement;
+    const weaknessEl = document.getElementById("weakessList") as HTMLDivElement;
     weaknessEl.replaceChildren();
 
     const res: AxiosResponse = await apiClient.get(type.type.url);
@@ -248,7 +248,7 @@ async function updateFlavor(url: string) {
 
   res.data.flavor_text_entries.forEach((flavorEntry: FlavorTextEntry) => {
     if (flavorEntry.language.name === "en") {
-      flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, '');
+      flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, ' ');
     }
   });
 }
