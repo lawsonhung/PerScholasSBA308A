@@ -154,7 +154,7 @@ async function updateAbilities(abilities) {
             if (effectEntry.language.name === "en") {
                 console.log(effectEntry);
                 const effectEl = document.createElement("p");
-                effectEl.innerText = effectEntry.effect.replace(/\n\n/g, '\n');
+                effectEl.innerText = effectEntry.short_effect.replace(/\n\n/g, '\n');
                 effectEl.classList.add("abilityEffect");
                 abilityFrag.append(effectEl);
             }

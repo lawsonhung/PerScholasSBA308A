@@ -156,7 +156,7 @@ async function updateGenus(url: string): Promise<string> {
     if (genus.language.name === "en")
       result = genus.genus;
   })
-  
+
   return result;
 }
 
@@ -190,7 +190,7 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
       if (effectEntry.language.name === "en") {
         console.log(effectEntry);
         const effectEl: HTMLParagraphElement = document.createElement("p");
-        effectEl.innerText = effectEntry.effect.replace(/\n\n/g, '\n');
+        effectEl.innerText = effectEntry.short_effect.replace(/\n\n/g, '\n');
         effectEl.classList.add("abilityEffect");
         abilityFrag.append(effectEl);
       }

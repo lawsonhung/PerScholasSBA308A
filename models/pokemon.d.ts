@@ -36,6 +36,7 @@ export interface Ability {
 export interface EffectEntry {
     effect: string;
     language: Language;
+    short_effect: string;
 }
 export interface Species {
     genera: Genus[];
