@@ -20,5 +20,9 @@ e.g.
 3. Start vite. 
 `npm run dev`
 
+## Future Considerations
+- Get weaknesses/resistances to display properly
+- Stage numbers
+
 ### Acknowledgements
 [![PokeAPI](/assets/images/PokeAPI%20Logo.png)](https://pokeapi.co/)

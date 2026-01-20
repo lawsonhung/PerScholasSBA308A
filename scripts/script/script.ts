@@ -224,17 +224,11 @@ async function updateDamageRelations(types: TypeAPIObject[]) {
     const res: AxiosResponse = await apiClient.get(type.type.url);
     const damageRelations = res.data.damage_relations;
 
-    console.log(`damageRelations for ${type.type.name}`, damageRelations);
-
-    const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }) => name);
-    const halfDamageTo = damageRelations.half_damage_to.map(({ name }) => name);
-
-    console.log("doubleDamageFrom", doubleDamageFrom)
-    console.log("halfDamageTo", halfDamageTo)
-
+    const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }: APIObject) => name);
+    const halfDamageTo = damageRelations.half_damage_to.map(({ name }: APIObject) => name);
     const halfDamageToSet = new Set(halfDamageTo);
     const weaknesses = [...new Set(doubleDamageFrom.filter((type: string) => halfDamageToSet.has(type)))];
-    console.log("weaknesses", weaknesses)
+
     weaknesses.forEach(weakness  => {
       const newWeakness: HTMLParagraphElement = document.createElement("p");
       newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
