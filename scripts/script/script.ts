@@ -218,13 +218,16 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
 async function updateDamageRelations(types: TypeAPIObject[]) {
   types.forEach(async (type: TypeAPIObject) => {
+    const weaknessEl = document.getElementById("weakness") as HTMLDivElement;
+    weaknessEl.replaceChildren();
+
     const res: AxiosResponse = await apiClient.get(type.type.url);
     const damageRelations = res.data.damage_relations;
 
     console.log(`damageRelations for ${type.type.name}`, damageRelations);
 
     const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }) => name);
-    const halfDamageTo = damageRelations.half_damage_to.map(({name}) => name);
+    const halfDamageTo = damageRelations.half_damage_to.map(({ name }) => name);
 
     console.log("doubleDamageFrom", doubleDamageFrom)
     console.log("halfDamageTo", halfDamageTo)
@@ -232,6 +235,12 @@ async function updateDamageRelations(types: TypeAPIObject[]) {
     const halfDamageToSet = new Set(halfDamageTo);
     const weaknesses = [...new Set(doubleDamageFrom.filter((type: string) => halfDamageToSet.has(type)))];
     console.log("weaknesses", weaknesses)
+    weaknesses.forEach(weakness  => {
+      const newWeakness: HTMLParagraphElement = document.createElement("p");
+      newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
+      weaknessEl.append(newWeakness);
+    })
+
   })
 }
 

@@ -176,6 +176,8 @@ async function updateAbilities(abilities) {
 }
 async function updateDamageRelations(types) {
     types.forEach(async (type) => {
+        const weaknessEl = document.getElementById("weakness");
+        weaknessEl.replaceChildren();
         const res = await apiClient.get(type.type.url);
         const damageRelations = res.data.damage_relations;
         console.log(`damageRelations for ${type.type.name}`, damageRelations);
@@ -186,6 +188,11 @@ async function updateDamageRelations(types) {
         const halfDamageToSet = new Set(halfDamageTo);
         const weaknesses = [...new Set(doubleDamageFrom.filter((type) => halfDamageToSet.has(type)))];
         console.log("weaknesses", weaknesses);
+        weaknesses.forEach(weakness => {
+            const newWeakness = document.createElement("p");
+            newWeakness.innerText = capitalizeFirstLetterOf(weakness);
+            weaknessEl.append(newWeakness);
+        });
     });
 }
 async function updateFlavor(url) {
