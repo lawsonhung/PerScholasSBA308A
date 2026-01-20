@@ -100,8 +100,8 @@ function updateImg(url) {
     spriteImg.src = url;
     spriteImg.height = imgHeight;
     spriteImg.style.width = "auto";
-    spriteImg.style.paddingLeft = "20%";
-    spriteImg.style.paddingRight = "20%";
+    // spriteImg.style.paddingLeft = "20%";
+    // spriteImg.style.paddingRight = "20%";
 }
 async function updateAbilities(abilities) {
     let abilitiesList = document.getElementById("abilitiesList");
