@@ -41,6 +41,9 @@ export interface EffectEntry {
 export interface Species {
     genera: Genus[];
     flavor_text_entries: FlavorTextEntry;
+    evolution_chain: {
+        url: string;
+    };
 }
 export interface Genus {
     genus: string;

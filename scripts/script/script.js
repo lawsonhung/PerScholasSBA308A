@@ -73,6 +73,7 @@ function showSuggestions(inputValue) {
 }
 function updateCard(pokemon) {
     updateName(pokemon.name);
+    updateEvolutionChain(pokemon.species.url);
     updateHp(pokemon.stats[0]);
     updateImg(pokemon.sprites.front_default);
     updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
@@ -84,6 +85,10 @@ function updateName(name) {
     if (!nameEl)
         throw new Error("name element does not exist");
     nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
+}
+async function updateEvolutionChain(speciesURL) {
+    let res = await apiClient.get(speciesURL);
+    console.log("evolve species", res.data.evolves_from_species.name);
 }
 function updateHp(stat) {
     const statLabelEl = document.getElementById("statLabelSpan");
@@ -152,7 +157,6 @@ async function updateAbilities(abilities) {
         abilityFrag.append(nameEl);
         res.data.effect_entries.forEach((effectEntry) => {
             if (effectEntry.language.name === "en") {
-                console.log(effectEntry);
                 const effectEl = document.createElement("p");
                 effectEl.innerText = effectEntry.short_effect.replace(/\n\n/g, '\n');
                 effectEl.classList.add("abilityEffect");

@@ -89,6 +89,7 @@ function showSuggestions(inputValue: string) {
 
 function updateCard(pokemon: Pokemon) {
   updateName(pokemon.name);
+  updateEvolutionChain(pokemon.species.url);
   updateHp(pokemon.stats[0]);
   updateImg(pokemon.sprites.front_default);
   updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
@@ -103,6 +104,11 @@ function updateName(name: string) {
     throw new Error("name element does not exist");
 
   nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
+}
+
+async function updateEvolutionChain(speciesURL: string) {
+  let res: AxiosResponse = await apiClient.get(speciesURL);
+  console.log("evolve species", res.data.evolves_from_species.name)
 }
 
 function updateHp(stat: Stat | undefined) {
@@ -188,7 +194,6 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
     res.data.effect_entries.forEach((effectEntry: EffectEntry) => {
       if (effectEntry.language.name === "en") {
-        console.log(effectEntry);
         const effectEl: HTMLParagraphElement = document.createElement("p");
         effectEl.innerText = effectEntry.short_effect.replace(/\n\n/g, '\n');
         effectEl.classList.add("abilityEffect");
