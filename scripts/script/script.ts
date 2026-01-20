@@ -138,12 +138,14 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
     const abilityFrag = document.createDocumentFragment();
     const nameEl: HTMLHeadingElement = document.createElement("h3");
     nameEl.innerText = res.data.name;
+    nameEl.classList.add("abilityName");
     abilityFrag.append(nameEl);
 
     res.data.effect_entries.forEach((effectEntry: EffectEntry) => {
       if (effectEntry.language.name === "en") {
         const effectEl: HTMLParagraphElement = document.createElement("p");
         effectEl.innerText = effectEntry.effect;
+        effectEl.classList.add("abilityEffect");
         abilityFrag.append(effectEl);
       }
     })

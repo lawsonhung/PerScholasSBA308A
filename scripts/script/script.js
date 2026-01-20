@@ -110,11 +110,13 @@ async function updateAbilities(abilities) {
         const abilityFrag = document.createDocumentFragment();
         const nameEl = document.createElement("h3");
         nameEl.innerText = res.data.name;
+        nameEl.classList.add("abilityName");
         abilityFrag.append(nameEl);
         res.data.effect_entries.forEach((effectEntry) => {
             if (effectEntry.language.name === "en") {
                 const effectEl = document.createElement("p");
                 effectEl.innerText = effectEntry.effect;
+                effectEl.classList.add("abilityEffect");
                 abilityFrag.append(effectEl);
             }
         });
