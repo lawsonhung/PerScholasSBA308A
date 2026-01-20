@@ -75,7 +75,7 @@ function updateCard(pokemon) {
     updateName(pokemon.name);
     updateHp(pokemon.stats[0]);
     updateImg(pokemon.sprites.front_default);
-    updatePhysicalProps(pokemon.id, pokemon.height, pokemon.weight);
+    updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
     updateAbilities(pokemon.abilities);
     updateFlavor(pokemon.species.url);
 }
@@ -110,13 +110,24 @@ function updateImg(url) {
     spriteImg.height = imgHeight;
     spriteImg.style.width = "auto";
 }
-function updatePhysicalProps(id, height, weight) {
+async function updatePhysicalProps(id, speciesURL, height, weight) {
     const pokedexIdSpan = document.getElementById("pokedexId");
+    const genusSpan = document.getElementById("genus");
     const heightSpan = document.getElementById("height");
     const weightSpan = document.getElementById("weight");
     pokedexIdSpan.innerText = id.toString();
+    genusSpan.innerText = await updateGenus(speciesURL);
     heightSpan.innerText = heightInFeetInches(height);
     weightSpan.innerText = weightInPounds(weight);
+}
+async function updateGenus(url) {
+    const res = await apiClient.get(url);
+    let result = "";
+    res.data.genera.forEach((genus) => {
+        if (genus.language.name === "en")
+            result = genus.genus;
+    });
+    return result;
 }
 function heightInFeetInches(decimeterValue) {
     const inches = Math.round(decimeterValue * 3.93701);

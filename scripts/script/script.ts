@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Pokemon, PokemonName, Stat } from '../../models/pokemon.js';
+import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Genus, Pokemon, PokemonName, Stat } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -91,7 +91,7 @@ function updateCard(pokemon: Pokemon) {
   updateName(pokemon.name);
   updateHp(pokemon.stats[0]);
   updateImg(pokemon.sprites.front_default);
-  updatePhysicalProps(pokemon.id, pokemon.height, pokemon.weight);
+  updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
   updateAbilities(pokemon.abilities);
   updateFlavor(pokemon.species.url);
 }
@@ -136,14 +136,28 @@ function updateImg(url: string) {
   spriteImg.style.width = "auto";
 }
 
-function updatePhysicalProps(id: number, height: number, weight: number) {
+async function updatePhysicalProps(id: number, speciesURL: string, height: number, weight: number) {
   const pokedexIdSpan = document.getElementById("pokedexId") as HTMLSpanElement;
+  const genusSpan = document.getElementById("genus") as HTMLSpanElement;
   const heightSpan = document.getElementById("height") as HTMLSpanElement;
   const weightSpan = document.getElementById("weight") as HTMLSpanElement;
 
   pokedexIdSpan.innerText = id.toString();
+  genusSpan.innerText = await updateGenus(speciesURL);
   heightSpan.innerText = heightInFeetInches(height);
   weightSpan.innerText = weightInPounds(weight);
+}
+
+async function updateGenus(url: string): Promise<string> {
+  const res: AxiosResponse = await apiClient.get(url);
+  let result: string = "";
+
+  res.data.genera.forEach((genus: Genus) => {
+    if (genus.language.name === "en")
+      result = genus.genus;
+  })
+  
+  return result;
 }
 
 function heightInFeetInches(decimeterValue: number): string {

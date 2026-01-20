@@ -41,14 +41,24 @@ export interface Ability {
 
 export interface EffectEntry {
   effect: string;
-  language: {
-    name: string;
-  }
+  language: Language;
+}
+
+export interface Species {
+  genera: Genus[];
+  flavor_text_entries: FlavorTextEntry;
+}
+
+export interface Genus {
+  genus: string;
+  language: Language;
 }
 
 export interface FlavorTextEntry {
   flavor_text: string;
-  language: {
-    name: string;
-  }
+  language: Language;
+}
+
+interface Language {
+  name: string;
 }
