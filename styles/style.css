@@ -143,8 +143,22 @@ body main {
   text-align: justify;
 }
 
-#flavorText {
+#footer {
+  display: flex;
+  margin-top: auto;
+}
+
+#footer > * {
+  width: 50%;
   font-size: 0.5em;
+}
+
+#damageRelations {
+  display: flex;
+  gap: 1em;
+}
+
+#flavorText {
   font-style: italic;
   display: flex;
   align-self: flex-end;

@@ -225,7 +225,7 @@ async function updateFlavor(url: string) {
 
   res.data.flavor_text_entries.forEach((flavorEntry: FlavorTextEntry) => {
     if (flavorEntry.language.name === "en") {
-      flavorEl.innerText = flavorEntry.flavor_text;
+      flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, '');
     }
   });
 }

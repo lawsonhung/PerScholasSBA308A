@@ -180,7 +180,7 @@ async function updateFlavor(url) {
     const res = await apiClient.get(url);
     res.data.flavor_text_entries.forEach((flavorEntry) => {
         if (flavorEntry.language.name === "en") {
-            flavorEl.innerText = flavorEntry.flavor_text;
+            flavorEl.innerText = flavorEntry.flavor_text.replace(/\n/g, '');
         }
     });
 }
