@@ -38,7 +38,7 @@ async function displayPokemon(name) {
     }
     clearSearchSuggestions();
     const pokemon = await getPokemon(name);
-    console.log("got pokemon", pokemon);
+    console.log("got pokemon", name, pokemon);
     updateCard(pokemon);
 }
 function clearSearchSuggestions() {
@@ -78,6 +78,7 @@ function updateCard(pokemon) {
     updateImg(pokemon.sprites.front_default);
     updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
     updateAbilities(pokemon.abilities);
+    updateDamageRelations(pokemon.types);
     updateFlavor(pokemon.species.url);
 }
 function updateName(name) {
@@ -159,7 +160,7 @@ async function updateAbilities(abilities) {
         let res = await apiClient.get(ability.ability.url);
         const abilityFrag = document.createDocumentFragment();
         const nameEl = document.createElement("h3");
-        nameEl.innerText = res.data.name;
+        nameEl.innerText = capitalizeFirstLetterOf(res.data.name);
         nameEl.classList.add("abilityName");
         abilityFrag.append(nameEl);
         res.data.effect_entries.forEach((effectEntry) => {
@@ -171,6 +172,12 @@ async function updateAbilities(abilities) {
             }
         });
         abilitiesList.append(abilityFrag);
+    });
+}
+async function updateDamageRelations(types) {
+    types.forEach(async (type) => {
+        const res = await apiClient.get(type.type.url);
+        console.log(res.data);
     });
 }
 async function updateFlavor(url) {

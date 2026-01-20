@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Genus, Pokemon, PokemonName, Stat } from '../../models/pokemon.js';
+import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Genus, Pokemon, PokemonName, Stat, TypeAPIObject } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -48,7 +48,7 @@ async function displayPokemon(name: string) {
   clearSearchSuggestions();
 
   const pokemon = await getPokemon(name);
-  console.log("got pokemon", pokemon);
+  console.log("got pokemon", name, pokemon);
   updateCard(pokemon);
 }
 
@@ -94,6 +94,7 @@ function updateCard(pokemon: Pokemon) {
   updateImg(pokemon.sprites.front_default);
   updatePhysicalProps(pokemon.id, pokemon.species.url, pokemon.height, pokemon.weight);
   updateAbilities(pokemon.abilities);
+  updateDamageRelations(pokemon.types);
   updateFlavor(pokemon.species.url);
 }
 
@@ -198,7 +199,7 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
     const abilityFrag = document.createDocumentFragment();
     const nameEl: HTMLHeadingElement = document.createElement("h3");
-    nameEl.innerText = res.data.name;
+    nameEl.innerText = capitalizeFirstLetterOf(res.data.name);
     nameEl.classList.add("abilityName");
     abilityFrag.append(nameEl);
 
@@ -213,6 +214,13 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
     abilitiesList.append(abilityFrag);
   });
+}
+
+async function updateDamageRelations(types: TypeAPIObject[]) {
+  types.forEach(async (type: TypeAPIObject) => {
+    const res: AxiosResponse = await apiClient.get(type.type.url);
+    console.log(res.data);
+  })
 }
 
 async function updateFlavor(url: string) {

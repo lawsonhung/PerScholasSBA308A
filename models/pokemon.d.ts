@@ -12,22 +12,25 @@ export interface Pokemon {
         front_default: string;
     };
     abilities: AbilityAPIObject[];
-    species: {
-        url: string;
-    };
+    species: APIObject;
+    types: TypeAPIObject[];
 }
 export interface Stat {
     base_stat: number;
-    stat: StatObject;
-}
-interface StatObject {
-    name: string;
-    url: string;
+    stat: APIObject;
 }
 export interface AbilityAPIObject {
-    ability: {
-        name: string;
-        url: string;
+    ability: APIObject;
+}
+export interface TypeAPIObject {
+    type: APIObject;
+}
+export interface Type {
+    name: string;
+    damage_relations: {
+        double_damage_from: APIObject[];
+        half_damage_from: APIObject[];
+        no_damage_from: APIObject[];
     };
 }
 export interface Ability {
@@ -41,9 +44,7 @@ export interface EffectEntry {
 export interface Species {
     genera: Genus[];
     flavor_text_entries: FlavorTextEntry;
-    evolution_chain: {
-        url: string;
-    };
+    evolution_chain: APIObject;
 }
 export interface Genus {
     genus: string;
@@ -55,6 +56,10 @@ export interface FlavorTextEntry {
 }
 interface Language {
     name: string;
+}
+interface APIObject {
+    name: string;
+    url: string;
 }
 export {};
 //# sourceMappingURL=pokemon.d.ts.map

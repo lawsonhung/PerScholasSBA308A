@@ -158,6 +158,10 @@ body main {
   gap: 1em;
 }
 
+.damageRelationLabel {
+  font-weight: bold;
+}
+
 #flavorText {
   font-style: italic;
   display: flex;
