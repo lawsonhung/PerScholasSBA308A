@@ -4,7 +4,10 @@ export interface PokemonName {
 }
 
 export interface Pokemon {
+  id: number;
   name: string;
+  height: number;
+  weight: number;
   stats: Stat[];
   sprites: {
     front_default: string;

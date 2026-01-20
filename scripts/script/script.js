@@ -75,6 +75,7 @@ function updateCard(pokemon) {
     updateName(pokemon.name);
     updateHp(pokemon.stats[0]);
     updateImg(pokemon.sprites.front_default);
+    updatePhysicalProps(pokemon.id, pokemon.height, pokemon.weight);
     updateAbilities(pokemon.abilities);
     updateFlavor(pokemon.species.url);
 }
@@ -108,6 +109,25 @@ function updateImg(url) {
     spriteImg.src = url;
     spriteImg.height = imgHeight;
     spriteImg.style.width = "auto";
+}
+function updatePhysicalProps(id, height, weight) {
+    const pokedexIdSpan = document.getElementById("pokedexId");
+    const heightSpan = document.getElementById("height");
+    const weightSpan = document.getElementById("weight");
+    pokedexIdSpan.innerText = id.toString();
+    heightSpan.innerText = heightInFeetInches(height);
+    weightSpan.innerText = weightInPounds(weight);
+}
+function heightInFeetInches(decimeterValue) {
+    const inches = Math.round(decimeterValue * 3.93701);
+    const feet = Math.floor(inches / 12);
+    if (inches % 12 === 0)
+        return `${feet}'`;
+    else
+        return `${feet}'${inches % 12}"`;
+}
+function weightInPounds(hectogramValue) {
+    return (hectogramValue * 0.220462).toFixed(1);
 }
 async function updateAbilities(abilities) {
     let abilitiesList = document.getElementById("abilitiesList");
