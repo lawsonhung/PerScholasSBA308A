@@ -34,8 +34,11 @@ export interface Type {
   name: string;
   damage_relations: {
     double_damage_from: APIObject[];
+    double_damage_to: APIObject[];
     half_damage_from: APIObject[];
+    half_damage_to: APIObject[];
     no_damage_from: APIObject[];
+    no_damage_to: APIObject;
   }
 }
 
@@ -69,7 +72,7 @@ interface Language {
   name: string;
 }
 
-interface APIObject {
+export interface APIObject {
   name: string;
   url: string;
 }
