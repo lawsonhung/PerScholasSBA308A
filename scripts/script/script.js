@@ -115,8 +115,9 @@ async function updateAbilities(abilities) {
         abilityFrag.append(nameEl);
         res.data.effect_entries.forEach((effectEntry) => {
             if (effectEntry.language.name === "en") {
+                console.log(effectEntry);
                 const effectEl = document.createElement("p");
-                effectEl.innerText = effectEntry.effect;
+                effectEl.innerText = effectEntry.effect.replace(/\n\n/g, '\n');
                 effectEl.classList.add("abilityEffect");
                 abilityFrag.append(effectEl);
             }
