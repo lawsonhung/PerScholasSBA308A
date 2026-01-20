@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Pokemon, PokemonName } from '../../models/pokemon.js';
+import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Pokemon, PokemonName, Stat } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -89,7 +89,7 @@ function showSuggestions(inputValue: string) {
 
 function updateCard(pokemon: Pokemon) {
   updateName(pokemon.name);
-  updateHp(pokemon.stats[0]?.base_stat);
+  updateHp(pokemon.stats[0]);
   updateImg(pokemon.sprites.front_default);
   updateAbilities(pokemon.abilities);
   updateFlavor(pokemon.species.url);
@@ -104,15 +104,23 @@ function updateName(name: string) {
   nameEl.innerText = name[0]?.toUpperCase() + name.substring(1);
 }
 
-function updateHp(hp: number | undefined) {
-  let hpEl = document.getElementById("hpSpan") as HTMLSpanElement;
+function updateHp(stat: Stat | undefined) {
+  const statLabelEl = document.getElementById("statLabelSpan") as HTMLSpanElement;
+  const hpEl = document.getElementById("hpSpan") as HTMLSpanElement;
 
+  if (!statLabelEl)
+    throw new Error("stat name element does not exist");
   if (!hpEl)
     throw new Error("hp span element does not exist");
-  if (!hp)
+  if (!stat)
+    throw new Error("base stats are undefined from Pokeapi");
+  if (!stat.stat.name)
+    throw new Error("hp stat name does not exist");
+  if (!stat.base_stat)
     throw new Error("hp is undefined from Pokeapi");
 
-  hpEl.innerText = hp.toString();
+  statLabelEl.innerText = stat.stat.name.toUpperCase();
+  hpEl.innerText = stat.base_stat.toString();
 }
 
 function updateImg(url: string) {
@@ -125,8 +133,6 @@ function updateImg(url: string) {
   spriteImg.src = url;
   spriteImg.height = imgHeight;
   spriteImg.style.width = "auto";
-  // spriteImg.style.paddingLeft = "20%";
-  // spriteImg.style.paddingRight = "20%";
 }
 
 

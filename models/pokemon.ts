@@ -15,7 +15,7 @@ export interface Pokemon {
   }
 }
 
-interface Stat {
+export interface Stat {
   base_stat: number;
   stat: StatObject
 }
