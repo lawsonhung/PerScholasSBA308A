@@ -76,6 +76,7 @@ function updateCard(pokemon) {
     updateHp(pokemon.stats[0]?.base_stat);
     updateImg(pokemon.sprites.front_default);
     updateAbilities(pokemon.abilities);
+    updateFlavor(pokemon.species.url);
 }
 function updateName(name) {
     let nameEl = document.getElementById("name");
@@ -121,6 +122,17 @@ async function updateAbilities(abilities) {
             }
         });
         abilitiesList.append(abilityFrag);
+    });
+}
+async function updateFlavor(url) {
+    const flavorEl = document.getElementById("flavorText");
+    if (!flavorEl)
+        throw new Error("Flavor paragraph element does not exist");
+    const res = await apiClient.get(url);
+    res.data.flavor_text_entries.forEach((flavorEntry) => {
+        if (flavorEntry.language.name === "en") {
+            flavorEl.innerText = flavorEntry.flavor_text;
+        }
     });
 }
 //# sourceMappingURL=script.js.map

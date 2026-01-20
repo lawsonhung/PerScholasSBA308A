@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import apiClient from '../apiClient/apiClient.js';
-import type { AbilityAPIObject, EffectEntry, Pokemon, PokemonName } from '../../models/pokemon.js';
+import type { AbilityAPIObject, EffectEntry, FlavorTextEntry, Pokemon, PokemonName } from '../../models/pokemon.js';
 
 let allPokemons: PokemonName[];
 
@@ -92,6 +92,7 @@ function updateCard(pokemon: Pokemon) {
   updateHp(pokemon.stats[0]?.base_stat);
   updateImg(pokemon.sprites.front_default);
   updateAbilities(pokemon.abilities);
+  updateFlavor(pokemon.species.url);
 }
 
 function updateName(name: string) {
@@ -135,6 +136,7 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 
   abilities.forEach(async (ability) => {
     let res: AxiosResponse = await apiClient.get(ability.ability.url);
+
     const abilityFrag = document.createDocumentFragment();
     const nameEl: HTMLHeadingElement = document.createElement("h3");
     nameEl.innerText = res.data.name;
@@ -151,5 +153,20 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
     })
 
     abilitiesList.append(abilityFrag);
+  });
+}
+
+async function updateFlavor(url: string) {
+  const flavorEl = document.getElementById("flavorText");
+
+  if (!flavorEl)
+    throw new Error("Flavor paragraph element does not exist");
+
+  const res: AxiosResponse = await apiClient.get(url);
+
+  res.data.flavor_text_entries.forEach((flavorEntry: FlavorTextEntry) => {
+    if (flavorEntry.language.name === "en") {
+      flavorEl.innerText = flavorEntry.flavor_text;
+    }
   });
 }

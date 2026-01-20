@@ -10,6 +10,9 @@ export interface Pokemon {
     front_default: string;
   }
   abilities: AbilityAPIObject[];
+  species: {
+    url: string;
+  }
 }
 
 interface Stat {
@@ -35,6 +38,13 @@ export interface Ability {
 
 export interface EffectEntry {
   effect: string;
+  language: {
+    name: string;
+  }
+}
+
+export interface FlavorTextEntry {
+  flavor_text: string;
   language: {
     name: string;
   }

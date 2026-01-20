@@ -118,3 +118,9 @@ body main {
 .abilityEffect {
   text-align: justify;
 }
+
+#flavorText {
+  font-size: 0.5em;
+  font-style: italic;
+  text-align: right;
+}
