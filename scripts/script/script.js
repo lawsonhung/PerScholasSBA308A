@@ -175,20 +175,46 @@ async function updateAbilities(abilities) {
     });
 }
 async function updateDamageRelations(types) {
+    console.log("types", types);
     types.forEach(async (type) => {
-        const weaknessEl = document.getElementById("weakessList");
-        weaknessEl.replaceChildren();
-        const res = await apiClient.get(type.type.url);
-        const damageRelations = res.data.damage_relations;
-        const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }) => name);
-        const halfDamageTo = damageRelations.half_damage_to.map(({ name }) => name);
-        const halfDamageToSet = new Set(halfDamageTo);
-        const weaknesses = [...new Set(doubleDamageFrom.filter((type) => halfDamageToSet.has(type)))];
-        weaknesses.forEach(weakness => {
-            const newWeakness = document.createElement("p");
-            newWeakness.innerText = capitalizeFirstLetterOf(weakness);
-            weaknessEl.append(newWeakness);
-        });
+        updateWeaknesses(type);
+        updateResistances(type);
+    });
+}
+async function updateWeaknesses(type) {
+    const weaknessEl = document.getElementById("weakessList");
+    weaknessEl.replaceChildren();
+    const res = await apiClient.get(type.type.url);
+    const damageRelations = res.data.damage_relations;
+    const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }) => name);
+    const halfDamageTo = damageRelations.half_damage_to.map(({ name }) => name);
+    const halfDamageToSet = new Set(halfDamageTo);
+    const weaknesses = [...new Set(doubleDamageFrom.filter((type) => halfDamageToSet.has(type)))];
+    weaknesses.forEach(weakness => {
+        const newWeakness = document.createElement("p");
+        newWeakness.innerText = capitalizeFirstLetterOf(weakness);
+        weaknessEl.append(newWeakness);
+    });
+}
+async function updateResistances(type) {
+    const resistanceEl = document.getElementById("resistanceList");
+    resistanceEl.replaceChildren();
+    const res = await apiClient.get(type.type.url);
+    const damageRelations = res.data.damage_relations;
+    const doubleDamageTo = damageRelations.double_damage_to.map(({ name }) => name);
+    const halfDamageFrom = damageRelations.half_damage_from.map(({ name }) => name);
+    const halfDamageFromSet = new Set(halfDamageFrom);
+    const resistances = [...new Set(doubleDamageTo.filter((type) => {
+            {
+                return halfDamageFromSet.has(type);
+            }
+        }))];
+    console.log("resistances", resistances);
+    resistances.forEach(resistance => {
+        console.log(resistance);
+        const newResistance = document.createElement("p");
+        newResistance.innerText = capitalizeFirstLetterOf(resistance);
+        resistanceEl.append(newResistance);
     });
 }
 async function updateFlavor(url) {

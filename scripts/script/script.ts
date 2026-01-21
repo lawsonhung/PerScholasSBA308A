@@ -217,25 +217,59 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 }
 
 async function updateDamageRelations(types: TypeAPIObject[]) {
+  console.log("types", types);
   types.forEach(async (type: TypeAPIObject) => {
-    const weaknessEl = document.getElementById("weakessList") as HTMLDivElement;
-    weaknessEl.replaceChildren();
-
-    const res: AxiosResponse = await apiClient.get(type.type.url);
-    const damageRelations = res.data.damage_relations;
-
-    const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }: APIObject) => name);
-    const halfDamageTo = damageRelations.half_damage_to.map(({ name }: APIObject) => name);
-    const halfDamageToSet = new Set(halfDamageTo);
-    const weaknesses = [...new Set(doubleDamageFrom.filter((type: string) => halfDamageToSet.has(type)))];
-
-    weaknesses.forEach(weakness  => {
-      const newWeakness: HTMLParagraphElement = document.createElement("p");
-      newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
-      weaknessEl.append(newWeakness);
-    })
-
+    updateWeaknesses(type);
+    updateResistances(type);
   })
+}
+
+async function updateWeaknesses(type: TypeAPIObject) {
+  const weaknessEl = document.getElementById("weakessList") as HTMLDivElement;
+  weaknessEl.replaceChildren();
+
+  const res: AxiosResponse = await apiClient.get(type.type.url);
+  const damageRelations = res.data.damage_relations;
+
+  const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }: APIObject) => name);
+  const halfDamageTo = damageRelations.half_damage_to.map(({ name }: APIObject) => name);
+  const halfDamageToSet = new Set(halfDamageTo);
+  const weaknesses = [...new Set(doubleDamageFrom.filter((type: string) =>
+    halfDamageToSet.has(type)
+  ))];
+
+  weaknesses.forEach(weakness => {
+    const newWeakness: HTMLParagraphElement = document.createElement("p");
+    newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
+    weaknessEl.append(newWeakness);
+  })
+}
+
+async function updateResistances(type: TypeAPIObject) {
+  const resistanceEl = document.getElementById("resistanceList") as HTMLDivElement;
+  resistanceEl.replaceChildren();
+
+  const res: AxiosResponse = await apiClient.get(type.type.url);
+  const damageRelations = res.data.damage_relations;
+
+  const doubleDamageTo = damageRelations.double_damage_to.map(({ name }: APIObject) => name);
+  const halfDamageFrom = damageRelations.half_damage_from.map(({ name }: APIObject) => name);
+  const halfDamageFromSet = new Set(halfDamageFrom);
+  const resistances = [...new Set(doubleDamageTo.filter((type: string) => {
+    {
+      return halfDamageFromSet.has(type)
+    }
+  }))];
+
+  console.log("resistances", resistances)
+
+  resistances.forEach(resistance => {
+    console.log(resistance);
+    const newResistance: HTMLParagraphElement = document.createElement("p");
+    newResistance.innerText = capitalizeFirstLetterOf(resistance as string);
+    resistanceEl.append(newResistance);
+  })
+
 }
 
 async function updateFlavor(url: string) {
