@@ -217,14 +217,47 @@ async function updateAbilities(abilities: AbilityAPIObject[]) {
 }
 
 async function updateDamageRelations(types: TypeAPIObject[]) {
+  let weaknesses: string[] = [];
+  let resistances: string[] = [];
+
   console.log("types", types);
-  types.forEach(async (type: TypeAPIObject) => {
-    updateWeaknesses(type);
-    updateResistances(type);
-  })
+  for (let typeIndex in types) {
+    const type = types[typeIndex];
+
+    if (!type)
+      throw new Error("type is undefined");
+
+    const tempWeaknesses = await getWeaknesses(type);
+    const tempResistances = await getResistances(type);
+    weaknesses.push(...tempWeaknesses);
+    resistances.push(...tempResistances);
+  }
+
+  const uniqueWeaknesses = [...new Set(weaknesses)];
+  const uniqueResistances = [...new Set(resistances)]
+  console.log("weaknesses", uniqueWeaknesses);
+  console.log("resistances", uniqueResistances);
+
+  const weaknessEl = document.getElementById("weakessList") as HTMLDivElement;
+  const resistanceEl = document.getElementById("resistanceList") as HTMLDivElement;
+  weaknessEl.replaceChildren();
+  resistanceEl.replaceChildren();
+
+  uniqueWeaknesses.forEach(weakness => {
+    const newWeakness: HTMLParagraphElement = document.createElement("p");
+    newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
+    weaknessEl.append(newWeakness);
+  });
+
+  uniqueResistances.forEach(resistance => {
+    console.log(resistance);
+    const newResistance: HTMLParagraphElement = document.createElement("p");
+    newResistance.innerText = capitalizeFirstLetterOf(resistance as string);
+    resistanceEl.append(newResistance);
+  });
 }
 
-async function updateWeaknesses(type: TypeAPIObject) {
+async function getWeaknesses(type: TypeAPIObject) {
   const weaknessEl = document.getElementById("weakessList") as HTMLDivElement;
   weaknessEl.replaceChildren();
 
@@ -234,18 +267,14 @@ async function updateWeaknesses(type: TypeAPIObject) {
   const doubleDamageFrom = damageRelations.double_damage_from.map(({ name }: APIObject) => name);
   const halfDamageTo = damageRelations.half_damage_to.map(({ name }: APIObject) => name);
   const halfDamageToSet = new Set(halfDamageTo);
-  const weaknesses = [...new Set(doubleDamageFrom.filter((type: string) =>
+  const weaknesses: string[] = [...new Set(doubleDamageFrom.filter((type: string) =>
     halfDamageToSet.has(type)
-  ))];
+  ))] as string[];
 
-  weaknesses.forEach(weakness => {
-    const newWeakness: HTMLParagraphElement = document.createElement("p");
-    newWeakness.innerText = capitalizeFirstLetterOf(weakness as string);
-    weaknessEl.append(newWeakness);
-  })
+  return weaknesses;
 }
 
-async function updateResistances(type: TypeAPIObject) {
+async function getResistances(type: TypeAPIObject) {
   const resistanceEl = document.getElementById("resistanceList") as HTMLDivElement;
   resistanceEl.replaceChildren();
 
@@ -255,21 +284,11 @@ async function updateResistances(type: TypeAPIObject) {
   const doubleDamageTo = damageRelations.double_damage_to.map(({ name }: APIObject) => name);
   const halfDamageFrom = damageRelations.half_damage_from.map(({ name }: APIObject) => name);
   const halfDamageFromSet = new Set(halfDamageFrom);
-  const resistances = [...new Set(doubleDamageTo.filter((type: string) => {
-    {
-      return halfDamageFromSet.has(type)
-    }
-  }))];
+  const resistances: string[] = [...new Set(doubleDamageTo.filter((type: string) => {
+    return halfDamageFromSet.has(type)
+  }))] as string[];
 
-  console.log("resistances", resistances)
-
-  resistances.forEach(resistance => {
-    console.log(resistance);
-    const newResistance: HTMLParagraphElement = document.createElement("p");
-    newResistance.innerText = capitalizeFirstLetterOf(resistance as string);
-    resistanceEl.append(newResistance);
-  })
-
+  return resistances;
 }
 
 async function updateFlavor(url: string) {

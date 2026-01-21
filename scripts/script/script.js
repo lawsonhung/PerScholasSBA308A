@@ -175,13 +175,39 @@ async function updateAbilities(abilities) {
     });
 }
 async function updateDamageRelations(types) {
+    let weaknesses = [];
+    let resistances = [];
     console.log("types", types);
-    types.forEach(async (type) => {
-        updateWeaknesses(type);
-        updateResistances(type);
+    for (let typeIndex in types) {
+        const type = types[typeIndex];
+        if (!type)
+            throw new Error("type is undefined");
+        const tempWeaknesses = await getWeaknesses(type);
+        const tempResistances = await getResistances(type);
+        weaknesses.push(...tempWeaknesses);
+        resistances.push(...tempResistances);
+    }
+    const uniqueWeaknesses = [...new Set(weaknesses)];
+    const uniqueResistances = [...new Set(resistances)];
+    console.log("weaknesses", uniqueWeaknesses);
+    console.log("resistances", uniqueResistances);
+    const weaknessEl = document.getElementById("weakessList");
+    const resistanceEl = document.getElementById("resistanceList");
+    weaknessEl.replaceChildren();
+    resistanceEl.replaceChildren();
+    uniqueWeaknesses.forEach(weakness => {
+        const newWeakness = document.createElement("p");
+        newWeakness.innerText = capitalizeFirstLetterOf(weakness);
+        weaknessEl.append(newWeakness);
+    });
+    uniqueResistances.forEach(resistance => {
+        console.log(resistance);
+        const newResistance = document.createElement("p");
+        newResistance.innerText = capitalizeFirstLetterOf(resistance);
+        resistanceEl.append(newResistance);
     });
 }
-async function updateWeaknesses(type) {
+async function getWeaknesses(type) {
     const weaknessEl = document.getElementById("weakessList");
     weaknessEl.replaceChildren();
     const res = await apiClient.get(type.type.url);
@@ -190,13 +216,9 @@ async function updateWeaknesses(type) {
     const halfDamageTo = damageRelations.half_damage_to.map(({ name }) => name);
     const halfDamageToSet = new Set(halfDamageTo);
     const weaknesses = [...new Set(doubleDamageFrom.filter((type) => halfDamageToSet.has(type)))];
-    weaknesses.forEach(weakness => {
-        const newWeakness = document.createElement("p");
-        newWeakness.innerText = capitalizeFirstLetterOf(weakness);
-        weaknessEl.append(newWeakness);
-    });
+    return weaknesses;
 }
-async function updateResistances(type) {
+async function getResistances(type) {
     const resistanceEl = document.getElementById("resistanceList");
     resistanceEl.replaceChildren();
     const res = await apiClient.get(type.type.url);
@@ -205,17 +227,9 @@ async function updateResistances(type) {
     const halfDamageFrom = damageRelations.half_damage_from.map(({ name }) => name);
     const halfDamageFromSet = new Set(halfDamageFrom);
     const resistances = [...new Set(doubleDamageTo.filter((type) => {
-            {
-                return halfDamageFromSet.has(type);
-            }
+            return halfDamageFromSet.has(type);
         }))];
-    console.log("resistances", resistances);
-    resistances.forEach(resistance => {
-        console.log(resistance);
-        const newResistance = document.createElement("p");
-        newResistance.innerText = capitalizeFirstLetterOf(resistance);
-        resistanceEl.append(newResistance);
-    });
+    return resistances;
 }
 async function updateFlavor(url) {
     const flavorEl = document.getElementById("flavorText");
